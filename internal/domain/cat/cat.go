@@ -24,6 +24,7 @@ type Cat struct {
 }
 
 func New(
+	id uuid.UUID,
 	name string,
 	yearsOfExperience uint,
 	breed string,
@@ -40,7 +41,7 @@ func New(
 	}
 
 	return &Cat{
-		id:        uuid.New(),
+		id:        id,
 		createdAt: time.Now(),
 
 		name:              name,
@@ -50,8 +51,13 @@ func New(
 	}, nil
 }
 
-func (c *Cat) SetSalary(s uint) {
+func (c *Cat) SetSalary(s uint) error {
+	if s == 0 {
+		return ErrZeroSalary
+	}
+
 	c.salary = s
+	return nil
 }
 
 func (c Cat) ID() uuid.UUID {

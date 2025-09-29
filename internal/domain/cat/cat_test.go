@@ -4,6 +4,7 @@ import (
 	"testing"
 	"time"
 
+	"github.com/google/uuid"
 	"github.com/not4sure/spy-cat-agency-mgmt/internal/domain/cat"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
@@ -11,15 +12,15 @@ import (
 
 func TestNewCat(t *testing.T) {
 	testCases := []struct {
+		testName   string
 		name       string
-		catName    string
 		experience uint
 		breed      string
 		salary     uint
 	}{
 		{
-			name:       "OK",
-			catName:    "Nancy",
+			testName:   "OK",
+			name:       "Nancy",
 			experience: 1,
 			breed:      "Test",
 			salary:     100,
@@ -27,8 +28,8 @@ func TestNewCat(t *testing.T) {
 	}
 
 	for _, tc := range testCases {
-		t.Run(tc.name, func(t *testing.T) {
-			c, err := cat.New(tc.name, tc.experience, tc.breed, tc.salary)
+		t.Run(tc.testName, func(t *testing.T) {
+			c, err := cat.New(uuid.New(), tc.name, tc.experience, tc.breed, tc.salary)
 
 			require.NoError(t, err)
 
@@ -79,11 +80,37 @@ func TestInvalidCat(t *testing.T) {
 
 	for _, tc := range testCases {
 		t.Run(tc.testName, func(t *testing.T) {
-			c, err := cat.New(tc.name, tc.experience, tc.breed, tc.salary)
+			c, err := cat.New(uuid.New(), tc.name, tc.experience, tc.breed, tc.salary)
 
-			require.Zero(t, c)
-			require.Error(t, err)
+			assert.Zero(t, c)
 			require.Equal(t, tc.err, err)
 		})
 	}
+}
+
+func TestSetSalary(t *testing.T) {
+	newSalary := uint(200)
+	c := validCat(t)
+
+	err := c.SetSalary(newSalary)
+
+	require.NoError(t, err)
+	require.Equal(t, newSalary, c.Salary())
+}
+
+func TestZeroSalary(t *testing.T) {
+	c := validCat(t)
+	invalidSalary := uint(0)
+	oldSalary := c.Salary()
+
+	err := c.SetSalary(invalidSalary)
+	require.Equal(t, cat.ErrZeroSalary, err)
+	require.Equal(t, oldSalary, c.Salary())
+}
+
+func validCat(t *testing.T) *cat.Cat {
+	c, err := cat.New(uuid.New(), "Test", 1, "Test", 100)
+	require.NoError(t, err)
+
+	return c
 }
