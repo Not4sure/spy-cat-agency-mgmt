@@ -35,9 +35,8 @@ func NewSetCatsSalaryHandler(
 }
 
 func (h setCatsSalaryHandler) Handle(ctx context.Context, cmd SetCatsSalary) (err error) {
-	err = h.repo.UpdateCat(ctx, cmd.ID, func(ctx context.Context, c *cat.Cat) {
-		c.SetSalary(cmd.Salary)
+	return h.repo.UpdateCat(ctx, cmd.ID, func(ctx context.Context, c *cat.Cat) (*cat.Cat, error) {
+		err := c.SetSalary(cmd.Salary)
+		return c, err
 	})
-
-	return err
 }

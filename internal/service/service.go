@@ -16,10 +16,12 @@ func NewApplication(ctx context.Context) app.Application {
 
 	return app.Application{
 		Commands: app.Commands{
-			CreateCat: command.NewCreateCatHandler(catRepo, logger),
+			CreateCat:     command.NewCreateCatHandler(catRepo, logger),
+			SetCatsSalary: command.NewSetCatsSalaryHandler(catRepo, logger),
 		},
 		Queries: app.Queries{
-			CatByID: query.NewCatByIDHandler(catRepo, logger),
+			CatByID:  query.NewCatByIDHandler(catRepo, logger),
+			ListCats: query.NewListCatsHandler(catRepo, logger),
 		},
 	}
 }

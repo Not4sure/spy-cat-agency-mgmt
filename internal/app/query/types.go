@@ -25,5 +25,13 @@ func domainCatToApplication(c *cat.Cat) Cat {
 		Breed:             c.Breed(),
 		Salary:            c.Salary(),
 	}
+}
 
+func domainCatsToApplication(cc []*cat.Cat) []Cat {
+	cats := []Cat{}
+	for _, c := range cc {
+		cats = append(cats, domainCatToApplication(c))
+	}
+
+	return cats
 }

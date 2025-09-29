@@ -62,10 +62,32 @@ func (cr *CatMemoryRepository) GetCat(ctx context.Context, catID uuid.UUID) (*ca
 
 // ListCats implements cat.Repository.
 func (cr *CatMemoryRepository) ListCats(ctx context.Context) ([]*cat.Cat, error) {
-	panic("unimplemented")
+	cr.Lock()
+	defer cr.Unlock()
+
+	var cc []*cat.Cat
+	for _, c := range cr.cats {
+		cc = append(cc, &c)
+	}
+
+	return cc, nil
 }
 
 // UpdateCat implements cat.Repository.
-func (cr *CatMemoryRepository) UpdateCat(ctx context.Context, catID uuid.UUID, updateFn func(ctx context.Context, c *cat.Cat)) error {
-	panic("unimplemented")
+func (cr *CatMemoryRepository) UpdateCat(
+	ctx context.Context,
+	catID uuid.UUID,
+	updateFn func(ctx context.Context, c *cat.Cat) (*cat.Cat, error),
+) error {
+	cr.Lock()
+	defer cr.Unlock()
+
+	cat, ok := cr.cats[catID]
+	if !ok {
+		return errors.New("cat not found")
+	}
+
+	c, err := updateFn(ctx, &cat)
+	cr.cats[catID] = *c
+	return err
 }

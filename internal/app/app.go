@@ -11,9 +11,11 @@ type Application struct {
 }
 
 type Commands struct {
-	CreateCat command.CreateCatHandler
+	CreateCat     command.CreateCatHandler
+	SetCatsSalary command.SetCatsSalaryHandler
 }
 
 type Queries struct {
-	CatByID query.CatByIDHandler
+	CatByID  query.CatByIDHandler
+	ListCats query.ListCatsHandler
 }

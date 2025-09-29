@@ -33,10 +33,6 @@ func NewCatByIDHandler(
 	)
 }
 
-type CatByIDReadModel interface {
-	GetCatByID(ctx context.Context, id uuid.UUID) (Cat, error)
-}
-
 func (h catByIDHandler) Handle(ctx context.Context, q CatByID) (Cat, error) {
 	c, err := h.repo.GetCat(ctx, q.ID)
 	if err != nil {

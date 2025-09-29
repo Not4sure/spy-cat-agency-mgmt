@@ -15,15 +15,12 @@ func NewAPIServer(app app.Application) APIServer {
 }
 
 func (s APIServer) RegisterRoutes(r *http.ServeMux) {
+	r.HandleFunc("GET /cat", s.ListCats)
 	r.HandleFunc("GET /cat/{id}", s.GetCatByID)
-
 	r.HandleFunc("POST /cat", s.CreateCat)
+	r.HandleFunc("PUT /cat/{id}/salary", s.SetCatsSalary)
 
-	// r.HandleFunc("GET /cat", s.ListCats)
-	//
-	//
 	// r.HandleFunc("DELETE /cat/{id}", s.DeleteCat)
 	//
-	// r.HandleFunc("PUT /cat/{id}/salary", s.UpdateCatSalary)
 
 }

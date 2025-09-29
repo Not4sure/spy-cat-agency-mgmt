@@ -25,3 +25,12 @@ func appCatToResponse(cat query.Cat) Cat {
 		Salary:            cat.Salary,
 	}
 }
+
+func appCatsToResponse(appCats []query.Cat) []Cat {
+	var cats []Cat
+	for _, c := range appCats {
+		cats = append(cats, appCatToResponse(c))
+	}
+
+	return cats
+}
