@@ -6,6 +6,7 @@ import (
 
 	"github.com/google/uuid"
 	"github.com/not4sure/spy-cat-agency-mgmt/internal/app/query"
+	"github.com/not4sure/spy-cat-agency-mgmt/internal/server/httperr"
 )
 
 func (s APIServer) GetCatByID(w http.ResponseWriter, r *http.Request) {
@@ -21,8 +22,7 @@ func (s APIServer) GetCatByID(w http.ResponseWriter, r *http.Request) {
 
 	appCat, err := s.app.Queries.CatByID.Handle(r.Context(), q)
 	if err != nil {
-		// TODO: handle error
-		http.Error(w, "unknown error", http.StatusInternalServerError)
+		httperr.RespondWithSlugError(err, w, r)
 		return
 	}
 

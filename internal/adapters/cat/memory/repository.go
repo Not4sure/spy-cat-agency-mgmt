@@ -41,7 +41,7 @@ func (cr *CatMemoryRepository) DeleteCatByID(ctx context.Context, catID uuid.UUI
 	defer cr.Unlock()
 
 	if _, ok := cr.cats[catID]; !ok {
-		return errors.New("cat not found")
+		return cat.ErrNotFound
 	}
 
 	delete(cr.cats, catID)
@@ -57,7 +57,7 @@ func (cr *CatMemoryRepository) GetCat(ctx context.Context, catID uuid.UUID) (*ca
 		return &v, nil
 	}
 
-	return nil, errors.New("cat not found")
+	return nil, cat.ErrNotFound
 }
 
 // ListCats implements cat.Repository.
@@ -82,12 +82,12 @@ func (cr *CatMemoryRepository) UpdateCat(
 	cr.Lock()
 	defer cr.Unlock()
 
-	cat, ok := cr.cats[catID]
+	kitten, ok := cr.cats[catID]
 	if !ok {
-		return errors.New("cat not found")
+		return cat.ErrNotFound
 	}
 
-	c, err := updateFn(ctx, &cat)
+	c, err := updateFn(ctx, &kitten)
 	cr.cats[catID] = *c
 	return err
 }

@@ -1,16 +1,18 @@
 package cat
 
 import (
-	"errors"
 	"time"
 
 	"github.com/google/uuid"
+	"github.com/not4sure/spy-cat-agency-mgmt/internal/common/errors"
 )
 
 var (
-	ErrEmptyName  = errors.New("Name cannot be empty")
-	ErrEmptyBreed = errors.New("Breed cannot be empty")
-	ErrZeroSalary = errors.New("Salary cannot be zero")
+	ErrEmptyName  = errors.NewIncorrectInputError("empty name", "Name should not be empty")
+	ErrEmptyBreed = errors.NewIncorrectInputError("empty breed", "Breed should not be empty")
+	ErrZeroSalary = errors.NewIncorrectInputError("zero salary", "Salary should be greater than zero")
+
+	ErrNotFound = errors.NewNotFoundError("not found", "Cat not found")
 )
 
 type Cat struct {

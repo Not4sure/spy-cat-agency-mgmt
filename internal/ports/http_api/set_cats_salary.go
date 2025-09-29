@@ -7,6 +7,7 @@ import (
 
 	"github.com/google/uuid"
 	"github.com/not4sure/spy-cat-agency-mgmt/internal/app/command"
+	"github.com/not4sure/spy-cat-agency-mgmt/internal/server/httperr"
 )
 
 type setCatsSalaryParams struct {
@@ -45,8 +46,7 @@ func (s APIServer) SetCatsSalary(w http.ResponseWriter, r *http.Request) {
 
 	err = s.app.Commands.SetCatsSalary.Handle(r.Context(), cmd)
 	if err != nil {
-		// TODO: handle error
-		http.Error(w, "unknown error", http.StatusInternalServerError)
+		httperr.RespondWithSlugError(err, w, r)
 		return
 	}
 }
