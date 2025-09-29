@@ -1,0 +1,79 @@
+package cat
+
+import (
+	"errors"
+	"time"
+
+	"github.com/google/uuid"
+)
+
+var (
+	ErrEmptyName  = errors.New("Name cannot be empty")
+	ErrEmptyBreed = errors.New("Breed cannot be empty")
+	ErrZeroSalary = errors.New("Salary cannot be zero")
+)
+
+type Cat struct {
+	id        uuid.UUID
+	createdAt time.Time
+
+	name              string
+	yearsOfExperience uint
+	breed             string
+	salary            uint
+}
+
+func New(
+	name string,
+	yearsOfExperience uint,
+	breed string,
+	salary uint,
+) (*Cat, error) {
+	if name == "" {
+		return nil, ErrEmptyName
+	}
+	if breed == "" {
+		return nil, ErrEmptyBreed
+	}
+	if salary == 0 {
+		return nil, ErrZeroSalary
+	}
+
+	return &Cat{
+		id:        uuid.New(),
+		createdAt: time.Now(),
+
+		name:              name,
+		yearsOfExperience: yearsOfExperience,
+		breed:             breed,
+		salary:            salary,
+	}, nil
+}
+
+func (c *Cat) SetSalary(s uint) {
+	c.salary = s
+}
+
+func (c Cat) ID() uuid.UUID {
+	return c.id
+}
+
+func (c Cat) CreatedAt() time.Time {
+	return c.createdAt
+}
+
+func (c Cat) Name() string {
+	return c.name
+}
+
+func (c Cat) YearsOfExperience() uint {
+	return c.yearsOfExperience
+}
+
+func (c Cat) Breed() string {
+	return c.breed
+}
+
+func (c Cat) Salary() uint {
+	return c.salary
+}
