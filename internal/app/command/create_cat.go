@@ -20,11 +20,13 @@ type CreateCat struct {
 type CreateCatHandler decorator.CommandHandler[CreateCat]
 
 type createCatHandler struct {
-	repo cat.Repository
+	repo         cat.Repository
+	breedFactory cat.BreedFactory
 }
 
 func NewCreateCatHandler(
 	repo cat.Repository,
+	breedFactory cat.BreedFactory,
 	logger *logrus.Entry,
 ) decorator.CommandHandler[CreateCat] {
 	if repo == nil {
@@ -32,13 +34,21 @@ func NewCreateCatHandler(
 	}
 
 	return decorator.ApplyCommandDecorators(
-		createCatHandler{repo: repo},
+		createCatHandler{
+			repo:         repo,
+			breedFactory: breedFactory,
+		},
 		logger,
 	)
 }
 
 func (h createCatHandler) Handle(ctx context.Context, cmd CreateCat) (err error) {
-	cat, err := cat.New(cmd.ID, cmd.Name, cmd.YearsOfExperience, cmd.Breed, cmd.Salary)
+	breed, err := h.breedFactory.NewBreed(cmd.Breed)
+	if err != nil {
+		return err
+	}
+
+	cat, err := cat.New(cmd.ID, cmd.Name, cmd.YearsOfExperience, breed, cmd.Salary)
 	if err != nil {
 		return err
 	}

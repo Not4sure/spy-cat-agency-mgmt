@@ -15,14 +15,14 @@ func TestNewCat(t *testing.T) {
 		testName   string
 		name       string
 		experience uint
-		breed      string
+		breed      cat.Breed
 		salary     uint
 	}{
 		{
 			testName:   "OK",
 			name:       "Nancy",
 			experience: 1,
-			breed:      "Test",
+			breed:      cat.MustNewBreed("Test"),
 			salary:     100,
 		},
 	}
@@ -48,7 +48,7 @@ func TestInvalidCat(t *testing.T) {
 		testName   string
 		name       string
 		experience uint
-		breed      string
+		breed      cat.Breed
 		salary     uint
 		err        error
 	}{
@@ -56,23 +56,15 @@ func TestInvalidCat(t *testing.T) {
 			testName:   "Empty name",
 			name:       "",
 			experience: 1,
-			breed:      "Test",
+			breed:      cat.MustNewBreed("Test"),
 			salary:     100,
 			err:        cat.ErrEmptyName,
-		},
-		{
-			testName:   "Empty breed",
-			name:       "Test",
-			experience: 1,
-			breed:      "",
-			salary:     100,
-			err:        cat.ErrEmptyBreed,
 		},
 		{
 			testName:   "Zero salary",
 			name:       "Test",
 			experience: 1,
-			breed:      "Test",
+			breed:      cat.MustNewBreed("Test"),
 			salary:     0,
 			err:        cat.ErrZeroSalary,
 		},
@@ -109,7 +101,7 @@ func TestZeroSalary(t *testing.T) {
 }
 
 func validCat(t *testing.T) *cat.Cat {
-	c, err := cat.New(uuid.New(), "Test", 1, "Test", 100)
+	c, err := cat.New(uuid.New(), "Test", 1, cat.MustNewBreed("test"), 100)
 	require.NoError(t, err)
 
 	return c

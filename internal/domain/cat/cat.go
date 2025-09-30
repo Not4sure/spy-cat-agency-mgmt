@@ -9,7 +9,6 @@ import (
 
 var (
 	ErrEmptyName  = errors.NewIncorrectInputError("empty name", "Name should not be empty")
-	ErrEmptyBreed = errors.NewIncorrectInputError("empty breed", "Breed should not be empty")
 	ErrZeroSalary = errors.NewIncorrectInputError("zero salary", "Salary should be greater than zero")
 
 	ErrNotFound = errors.NewNotFoundError("not found", "Cat not found")
@@ -21,7 +20,7 @@ type Cat struct {
 
 	name              string
 	yearsOfExperience uint
-	breed             string
+	breed             Breed
 	salary            uint
 }
 
@@ -29,14 +28,11 @@ func New(
 	id uuid.UUID,
 	name string,
 	yearsOfExperience uint,
-	breed string,
+	breed Breed,
 	salary uint,
 ) (*Cat, error) {
 	if name == "" {
 		return nil, ErrEmptyName
-	}
-	if breed == "" {
-		return nil, ErrEmptyBreed
 	}
 	if salary == 0 {
 		return nil, ErrZeroSalary
@@ -79,7 +75,7 @@ func (c Cat) YearsOfExperience() uint {
 }
 
 func (c Cat) Breed() string {
-	return c.breed
+	return c.breed.String()
 }
 
 func (c Cat) Salary() uint {
