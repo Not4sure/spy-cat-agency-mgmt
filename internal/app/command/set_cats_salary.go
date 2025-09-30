@@ -11,7 +11,7 @@ import (
 
 type SetCatsSalary struct {
 	ID     uuid.UUID
-	Salary uint
+	Salary int
 }
 
 type SetCatsSalaryHandler decorator.CommandHandler[SetCatsSalary]

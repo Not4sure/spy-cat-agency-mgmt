@@ -11,9 +11,9 @@ type Cat struct {
 	ID                uuid.UUID
 	CreatedAt         time.Time
 	Name              string
-	YearsOfExperience uint
+	YearsOfExperience int
 	Breed             string
-	Salary            uint
+	Salary            int
 }
 
 func domainCatToApplication(c *cat.Cat) Cat {

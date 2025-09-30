@@ -12,9 +12,9 @@ import (
 
 type createCatParams struct {
 	Name              string `json:"name"`
-	YearsOfExperience uint   `json:"yearsOfExperience"`
+	YearsOfExperience int    `json:"yearsOfExperience"`
 	Breed             string `json:"breed"`
-	Salary            uint   `json:"salary"`
+	Salary            int    `json:"salary"`
 }
 
 func (p createCatParams) ToCmd() command.CreateCat {

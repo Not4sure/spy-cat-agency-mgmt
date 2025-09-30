@@ -10,9 +10,9 @@ type Cat struct {
 	ID                string    `json:"id"`
 	CreatedAt         time.Time `json:"createdAt"`
 	Name              string    `json:"name"`
-	YearsOfExperience uint      `json:"yearsOfExperience"`
+	YearsOfExperience int       `json:"yearsOfExperience"`
 	Breed             string    `json:"breed"`
-	Salary            uint      `json:"salary"`
+	Salary            int       `json:"salary"`
 }
 
 func appCatToResponse(cat query.Cat) Cat {

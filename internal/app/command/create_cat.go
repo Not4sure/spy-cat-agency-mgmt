@@ -12,9 +12,9 @@ import (
 type CreateCat struct {
 	ID                uuid.UUID
 	Name              string
-	YearsOfExperience uint
+	YearsOfExperience int
 	Breed             string
-	Salary            uint
+	Salary            int
 }
 
 type CreateCatHandler decorator.CommandHandler[CreateCat]

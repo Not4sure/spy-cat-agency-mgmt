@@ -14,9 +14,9 @@ func TestNewCat(t *testing.T) {
 	testCases := []struct {
 		testName   string
 		name       string
-		experience uint
+		experience int
 		breed      cat.Breed
-		salary     uint
+		salary     int
 	}{
 		{
 			testName:   "OK",
@@ -47,9 +47,9 @@ func TestInvalidCat(t *testing.T) {
 	testCases := []struct {
 		testName   string
 		name       string
-		experience uint
+		experience int
 		breed      cat.Breed
-		salary     uint
+		salary     int
 		err        error
 	}{
 		{
@@ -66,7 +66,7 @@ func TestInvalidCat(t *testing.T) {
 			experience: 1,
 			breed:      cat.MustNewBreed("Test"),
 			salary:     0,
-			err:        cat.ErrZeroSalary,
+			err:        cat.ErrInvalidSalary,
 		},
 	}
 
@@ -81,7 +81,7 @@ func TestInvalidCat(t *testing.T) {
 }
 
 func TestSetSalary(t *testing.T) {
-	newSalary := uint(200)
+	newSalary := 200
 	c := validCat(t)
 
 	err := c.SetSalary(newSalary)
@@ -92,11 +92,11 @@ func TestSetSalary(t *testing.T) {
 
 func TestZeroSalary(t *testing.T) {
 	c := validCat(t)
-	invalidSalary := uint(0)
+	invalidSalary := -20
 	oldSalary := c.Salary()
 
 	err := c.SetSalary(invalidSalary)
-	require.Equal(t, cat.ErrZeroSalary, err)
+	require.Equal(t, cat.ErrInvalidSalary, err)
 	require.Equal(t, oldSalary, c.Salary())
 }
 

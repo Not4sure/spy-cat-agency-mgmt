@@ -11,7 +11,7 @@ import (
 )
 
 type setCatsSalaryParams struct {
-	Salary uint `json:"salary"`
+	Salary int `json:"salary"`
 }
 
 func (p setCatsSalaryParams) ToCmd() command.SetCatsSalary {

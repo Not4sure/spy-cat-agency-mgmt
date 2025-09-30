@@ -9,21 +9,21 @@ import (
 	"github.com/not4sure/spy-cat-agency-mgmt/internal/domain/cat"
 )
 
-// CatMemoryRepository is an in-memory implementation
+// MemoryCatRepository is an in-memory implementation
 // of a cat.Repository.
-type CatMemoryRepository struct {
+type MemoryCatRepository struct {
 	sync.Mutex
 	cats map[uuid.UUID]cat.Cat
 }
 
-func NewCatMemoryRepository() cat.Repository {
-	return &CatMemoryRepository{
+func NewMemoryCatRepository() cat.Repository {
+	return &MemoryCatRepository{
 		cats: map[uuid.UUID]cat.Cat{},
 	}
 }
 
 // AddCat implements cat.Repository.
-func (cr *CatMemoryRepository) AddCat(ctx context.Context, c *cat.Cat) error {
+func (cr *MemoryCatRepository) AddCat(ctx context.Context, c *cat.Cat) error {
 	cr.Lock()
 	defer cr.Unlock()
 
@@ -36,7 +36,7 @@ func (cr *CatMemoryRepository) AddCat(ctx context.Context, c *cat.Cat) error {
 }
 
 // DeleteCatByID implements cat.Repository.
-func (cr *CatMemoryRepository) DeleteCatByID(ctx context.Context, catID uuid.UUID) error {
+func (cr *MemoryCatRepository) DeleteCatByID(ctx context.Context, catID uuid.UUID) error {
 	cr.Lock()
 	defer cr.Unlock()
 
@@ -49,7 +49,7 @@ func (cr *CatMemoryRepository) DeleteCatByID(ctx context.Context, catID uuid.UUI
 }
 
 // GetCat implements cat.Repository.
-func (cr *CatMemoryRepository) GetCat(ctx context.Context, catID uuid.UUID) (*cat.Cat, error) {
+func (cr *MemoryCatRepository) GetCat(ctx context.Context, catID uuid.UUID) (*cat.Cat, error) {
 	cr.Lock()
 	defer cr.Unlock()
 
@@ -61,7 +61,7 @@ func (cr *CatMemoryRepository) GetCat(ctx context.Context, catID uuid.UUID) (*ca
 }
 
 // ListCats implements cat.Repository.
-func (cr *CatMemoryRepository) ListCats(ctx context.Context) ([]*cat.Cat, error) {
+func (cr *MemoryCatRepository) ListCats(ctx context.Context) ([]*cat.Cat, error) {
 	cr.Lock()
 	defer cr.Unlock()
 
@@ -74,7 +74,7 @@ func (cr *CatMemoryRepository) ListCats(ctx context.Context) ([]*cat.Cat, error)
 }
 
 // UpdateCat implements cat.Repository.
-func (cr *CatMemoryRepository) UpdateCat(
+func (cr *MemoryCatRepository) UpdateCat(
 	ctx context.Context,
 	catID uuid.UUID,
 	updateFn func(ctx context.Context, c *cat.Cat) (*cat.Cat, error),
