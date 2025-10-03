@@ -6,10 +6,10 @@ import (
 	"slices"
 	"sync"
 	"time"
-
-	"github.com/not4sure/spy-cat-agency-mgmt/internal/domain/cat"
 )
 
+// CatAPIBreedValidator is BreedValidator implementation
+// which uses thecatapi.com for breed validation.
 type CatAPIBreedValidator struct {
 	sync.Mutex
 	origin          string
@@ -19,7 +19,8 @@ type CatAPIBreedValidator struct {
 	lastFetched time.Time
 }
 
-func NewCatAPIBreedValidator(opts ...CatAPIOption) cat.BreedValidator {
+// NewCatAPIBreedValidator creates CatAPIBreedValidator.
+func NewCatAPIBreedValidator(opts ...CatAPIOption) *CatAPIBreedValidator {
 	cav := &CatAPIBreedValidator{
 		origin:          "api.thecatapi.com",
 		cachingInterval: 30 * time.Second,
@@ -32,6 +33,7 @@ func NewCatAPIBreedValidator(opts ...CatAPIOption) cat.BreedValidator {
 	return cav
 }
 
+// Breeds returns slice of valid breed names.
 func (bv *CatAPIBreedValidator) Breeds(ctx context.Context) []string {
 	bv.Lock()
 	defer bv.Unlock()
@@ -48,6 +50,7 @@ func (bv *CatAPIBreedValidator) Breeds(ctx context.Context) []string {
 	return bv.breeds
 }
 
+// IsValid implements cat.BreedValidator
 func (bv *CatAPIBreedValidator) IsValid(breed string) bool {
 	ctx := context.TODO()
 
@@ -58,6 +61,8 @@ func (bv *CatAPIBreedValidator) makeURL(path string) string {
 	return fmt.Sprintf("https://%s%s", bv.origin, path)
 }
 
+// needToFetch is true if there's no cached breeds or
+// cachingInterval has pased.
 func (bv *CatAPIBreedValidator) needToFetch() bool {
 	if len(bv.breeds) == 0 {
 		return true

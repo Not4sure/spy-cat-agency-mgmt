@@ -13,9 +13,7 @@ type breedRsp []struct {
 }
 
 func (bv *CatAPIBreedValidator) FetchBreedNames(ctx context.Context) ([]string, error) {
-	url := bv.makeURL("/v1/breeds")
-
-	r, err := http.NewRequestWithContext(ctx, http.MethodGet, url, nil)
+	r, err := http.NewRequestWithContext(ctx, http.MethodGet, bv.makeURL("/v1/breeds"), nil)
 	if err != nil {
 		return nil, err
 	}
