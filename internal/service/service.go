@@ -33,6 +33,7 @@ func NewApplication(ctx context.Context) app.Application {
 		Commands: app.Commands{
 			CreateCat:     command.NewCreateCatHandler(catRepo, breedFactory, logger),
 			SetCatsSalary: command.NewSetCatsSalaryHandler(catRepo, logger),
+			DeleteCat:     command.NewDeleteCatHandler(catRepo, logger),
 		},
 		Queries: app.Queries{
 			CatByID:  query.NewCatByIDHandler(catRepo, logger),

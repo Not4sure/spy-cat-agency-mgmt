@@ -40,6 +40,16 @@ func (q *Queries) CreateCat(ctx context.Context, arg CreateCatParams) error {
 	return err
 }
 
+const deleteCat = `-- name: DeleteCat :exec
+DELETE FROM cats
+WHERE id = $1
+`
+
+func (q *Queries) DeleteCat(ctx context.Context, id pgtype.UUID) error {
+	_, err := q.db.Exec(ctx, deleteCat, id)
+	return err
+}
+
 const getCat = `-- name: GetCat :one
 SELECT id, created_at, name, years_of_experience, breed, salary FROM cats
 WHERE id = $1 LIMIT 1
@@ -89,4 +99,29 @@ func (q *Queries) ListCats(ctx context.Context) ([]Cat, error) {
 		return nil, err
 	}
 	return items, nil
+}
+
+const updateCat = `-- name: UpdateCat :exec
+UPDATE cats 
+SET name = $2, years_of_experience = $3, breed = $4, salary = $5
+WHERE id = $1
+`
+
+type UpdateCatParams struct {
+	ID                pgtype.UUID
+	Name              string
+	YearsOfExperience int16
+	Breed             string
+	Salary            int16
+}
+
+func (q *Queries) UpdateCat(ctx context.Context, arg UpdateCatParams) error {
+	_, err := q.db.Exec(ctx, updateCat,
+		arg.ID,
+		arg.Name,
+		arg.YearsOfExperience,
+		arg.Breed,
+		arg.Salary,
+	)
+	return err
 }

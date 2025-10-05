@@ -13,6 +13,7 @@ type Application struct {
 type Commands struct {
 	CreateCat     command.CreateCatHandler
 	SetCatsSalary command.SetCatsSalaryHandler
+	DeleteCat     command.DeleteCatHandler
 }
 
 type Queries struct {
